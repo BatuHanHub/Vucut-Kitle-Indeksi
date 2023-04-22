@@ -1,54 +1,52 @@
 # Kütüphaneler eklendi {
-from tkinter import * # GUİ yani Grafiksel Kullanıcı Arayüzü 
-from tkinter import messagebox # Grafiksel Kullanıcı Arayüzüne 'messagebox' kolu eklendi. 
-# Messagebox: kullanıcıya hata göstermek, bilgi vermek, uyarı vermek, evet hayır sorusu vb. soruları soran bir Tkinter'da bulunan ek işlev
+from tkinter import *
+from tkinter import messagebox
 # }
 
-# 18.5'in altındaki VKİ: Zayıf
-# 18.5 - 24.9 arası VKİ: Normal
-# 25 - 29.9 arası VKİ: Fazla kilolu
-# 30 - 34.9 arası VKİ: Obez (Tip 1)
-# 35 - 39.9 arası VKİ: Obez (Tip 2)
-# 40 ve üzeri VKİ: Aşırı obez (Tip 3)
-
-def hesapla(): # Düğme için fonksiyon oluşturuldu
-    global kilogramEnt, boyEnt, VuKiIn # Local -> Global
-    VuKiIn.configure(state='normal') # Çıktı 'normal' yaptı çünkü çıktı 'readonly' yani sadece okunabilir ama bunu 'normal' yaparak üzerine yazı yazılabilir hale getirdim
-    VuKiIn.delete(0, END) # İçerik temizlendi
-    kilogramEntInt = int(kilogramEnt.get()) # Kullanıcının girdiği kilo, KilogramEntInt değişkenine integer olarak geçirildi    
-    boyEntFlt = float(boyEnt.get()) # Kullanıcının girdiği boy, boyEntFlt değişkenine float olarak geçirildi 
-    
-    indeks = kilogramEntInt / (boyEntFlt*boyEntFlt) # İşlem yapılıyor
-    indeks = str(indeks) # indeks string değerine geçirildi
-    
-    VuKiIn.insert(END, indeks) # İndeks çıktıya basıldı
-    VuKiIn.configure(state='readonly') # Kullanıcı çıktıyı dokunmasın diye 'readonly' olarak değiştirildi
-    
-    indeks = float(indeks) # İndeks yine float olarak değiştirildi
-    
-    if indeks < 18.5:
-        messagebox.showwarning('UYARI!',f'''Çok zayıfsınız. Lütfen VKİ(Vücut Kitle İndeksi) 18.5-24.9 arasında yapabilmeniz için -{18 - indeks}- değer daha yükseltmeniz gerekmektedir. \n
-VKİ değerinizi yükseltmek için doktorunuza başvurabilir veya spor yaparak ve sağlıklı beslenebilirsiniz.''')
-
-    elif indeks >= 18.5 and indeks <= 24.9:
-        messagebox.showinfo('SAĞLIKLI','VKİ değerleriniz normal.')
+def hesapla():
+    try:
+        global kilogramEnt, boyEnt, VuKiIn
+        VuKiIn.configure(state='normal')
+        VuKiIn.delete(0, END) 
+        kilogramEntFlt = float(kilogramEnt.get())    
+        boyEntFlt = float(boyEnt.get())  
         
-    elif indeks >= 25.0 and indeks <= 29.9:
-        messagebox.showerror('UYARI!',f'''Kilolusunuz. Lütfen VKİ(Vücut Kitle İndeksi) 18.5-24.9 arasında yapabilmeniz için -{18 - indeks}- değer daha düşürmeniz gerekmektedir. \n
-VKİ değerinizi düşürmek için doktorunuza başvurabilir veya spor yaparak ve sağlıklı beslenebilirsiniz.''')
-
-    elif indeks >= 30.0 and indeks <= 34.9:
-        messagebox.showwarning('DİKKAT!',f'''1.TİP obezsiniz. Lütfen VKİ(Vücut Kitle İndeksi) 18.5-24.9 arasında yapabilmeniz için -{18 - indeks}- değer daha düşürmeniz gerekmektedir. \n
-VKİ değerinizi düşürmek için doktorunuza başvurabilir veya spor yaparak ve sağlıklı beslenebilirsiniz.''')
+        indeks = kilogramEntFlt / (boyEntFlt*boyEntFlt) 
         
-    elif indeks >= 35.0 and indeks <= 39.9:
-        messagebox.showwarning('DİKKAT!',f'''2.TİP obezsiniz. Lütfen VKİ(Vücut Kitle İndeksi) 18.5-24.9 arasında yapabilmeniz için -{18 - indeks}- değer daha düşürmeniz gerekmektedir. \n
-VKİ değerinizi düşürmek için doktorunuza başvurabilir veya spor yaparak ve sağlıklı beslenebilirsiniz.''')
-    
-    else:
-        messagebox.showwarning('DİKKAT!',f'''3.TİP obezsiniz. Lütfen VKİ(Vücut Kitle İndeksi) 18.5-24.9 arasında yapabilmeniz için -{18 - indeks}- değer daha düşürmeniz gerekmektedir. \n
-VKİ değerinizi düşürmek için doktorunuza başvurabilir veya spor yaparak ve sağlıklı beslenebilirsiniz.''')
+        idealKilo = 22.0*(boyEntFlt * boyEntFlt)
+        
+        indeks = str(indeks)         
+        VuKiIn.insert(END, indeks) 
+        VuKiIn.configure(state='readonly') 
+        
+        indeks = float(indeks)
+        
+        if indeks < 18.5:
+            messagebox.showwarning('UYARI!',f'''Zayıfsınız. Lütfen VKİ(Vücut Kitle İndeksi) 18.5-24.9 arasında yapabilmeniz için -{18.5*(boyEntFlt*boyEntFlt)-kilogramEntFlt}- değer daha yükseltmeniz gerekmektedir. \n
+    Kilonuzu yükseltmek için doktorunuza başvurabilir veya spor yaparak ve sağlıklı beslenebilirsiniz.''')
 
+        elif indeks >= 18.5 and indeks <= 24.9:
+            messagebox.showinfo('SAĞLIKLI','VKİ değerleriniz normal.')
+            
+        elif indeks >= 25.0 and indeks <= 29.9:
+            messagebox.showerror('UYARI!',f'''Kilolusunuz. Lütfen VKİ(Vücut Kitle İndeksi) 18.5-24.9 arasında yapabilmeniz için -{kilogramEntFlt - idealKilo}- kilo daha düşürmeniz gerekmektedir. \n
+    Kilonuzu düşürmek için doktorunuza başvurabilir veya spor yaparak ve sağlıklı beslenebilirsiniz.''')
+
+        elif indeks >= 30.0 and indeks <= 34.9:
+            messagebox.showwarning('DİKKAT!',f'''1.TİP obezsiniz. Lütfen VKİ(Vücut Kitle İndeksi) 18.5-24.9 arasında yapabilmeniz için -{kilogramEntFlt - idealKilo}- kilo daha düşürmeniz gerekmektedir. \n
+    Kilonuzu düşürmek için doktorunuza başvurabilir veya spor yaparak ve sağlıklı beslenebilirsiniz.''')
+            
+        elif indeks >= 35.0 and indeks <= 39.9:
+            messagebox.showwarning('DİKKAT!',f'''2.TİP obezsiniz. Lütfen VKİ(Vücut Kitle İndeksi) 18.5-24.9 arasında yapabilmeniz için -{kilogramEntFlt - idealKilo}- kilo daha düşürmeniz gerekmektedir. \n
+    Kilonuzu düşürmek için doktorunuza başvurabilir veya spor yaparak ve sağlıklı beslenebilirsiniz.''')
+        
+        else:
+            messagebox.showwarning('DİKKAT!',f'''3.TİP obezsiniz. Lütfen VKİ(Vücut Kitle İndeksi) 18.5-24.9 arasında yapabilmeniz için -{kilogramEntFlt - idealKilo}- kilo daha düşürmeniz gerekmektedir. \n
+    kilonuzu düşürmek için doktorunuza başvurabilir veya spor yaparak ve sağlıklı beslenebilirsiniz.''')
+
+        
+    except ValueError:
+        messagebox.showerror('HATA','Lütfen sayı giriniz.')        
   
 # Pencere özelleştirme {
 pencere = Tk() # pencere değişkeni oluşturuldu ve Pencere, pencere değişkenine atıldı. 
